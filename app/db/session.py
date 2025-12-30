@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+import os
 
 from ..core.config import settings
 
@@ -8,15 +9,25 @@ class Base(DeclarativeBase):
     pass
 
 
-# Engine
+DATABASE_URL = settings.DATABASE_URL
+
+# ✅ Force SSL for Render Postgres
 engine = create_engine(
-    settings.DATABASE_URL,
+    DATABASE_URL,
     future=True,
     pool_pre_ping=True,
+    connect_args={
+        "sslmode": "require"
+    }
 )
 
 # Session
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    future=True,
+)
 
 
 def get_db():
@@ -25,4 +36,3 @@ def get_db():
         yield db
     finally:
         db.close()
-

@@ -6,7 +6,7 @@ import os
 
 class Settings(BaseSettings):
     # App
-    PROJECT_NAME: str = "Aman Skies AI Backend"
+    PROJECT_NAME: str = "Weather Forecast AI Backend"
     API_V1_PREFIX: str = "/api"
 
     # Security

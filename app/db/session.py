@@ -7,20 +7,13 @@ class Base(DeclarativeBase):
     pass
 
 
-DATABASE_URL = settings.DATABASE_URL
-
-# ✅ Force SSL for Render Postgres
 engine = create_engine(
-    DATABASE_URL,
+    settings.DATABASE_URL,
     pool_pre_ping=True,
-    connect_args={"sslmode": "require"},
+    connect_args={"sslmode": "require"} if "postgres" in settings.DATABASE_URL else {},
 )
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
 def get_db():

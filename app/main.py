@@ -1,18 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
 
-from app.api.routes.health import router as health_router
-from app.api.routes.auth import router as auth_router
-from app.api.routes.weather import router as weather_router
-from app.api.routes.recommendations import router as rec_router
-from app.api.routes.predictions import router as pred_router
+from .core.config import settings
+from .db.session import Base, engine
+from .api.routes.weather import router as weather_router
+from .api.routes.health import router as health_router
 
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="Aman Skies AI Backend",
-        version="0.1.0",
+        title=settings.PROJECT_NAME,
+        version="0.1.0"
     )
 
     app.add_middleware(
@@ -23,11 +21,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    @app.on_event("startup")
+    def startup():
+        Base.metadata.create_all(bind=engine)
+
     app.include_router(health_router, prefix="/api")
-    app.include_router(auth_router, prefix="/api")
     app.include_router(weather_router, prefix="/api")
-    app.include_router(rec_router, prefix="/api")
-    app.include_router(pred_router, prefix="/api")
 
     return app
 

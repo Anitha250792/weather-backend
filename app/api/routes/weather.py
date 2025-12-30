@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.db.session import get_db
+from ...db.session import get_db
 from ...models.weather import WeatherRecord
 
 router = APIRouter(prefix="/weather", tags=["weather"])

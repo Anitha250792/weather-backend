@@ -1,22 +1,16 @@
-from pydantic import Field
-from pydantic_settings import BaseSettings
 from typing import List
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Weather Forecast AI Backend"
-    API_V1_PREFIX: str = "/api"
 
-    SECRET_KEY: str = Field(default="dev-secret", env="SECRET_KEY")
+    DATABASE_URL: str
+    OPENWEATHER_API_KEY: str
 
-    DATABASE_URL: str = Field(
-        default="sqlite:///./weather_ai.db",
-        env="DATABASE_URL"
-    )
-
-    # ✅ FIX IS HERE (typed field)
     CORS_ALLOW_ORIGINS: List[str] = [
         "http://localhost:5173",
+        "http://127.0.0.1:5173",
         "https://weather-frontend-two-plum.vercel.app",
     ]
 

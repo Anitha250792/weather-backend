@@ -13,24 +13,29 @@ def create_app() -> FastAPI:
         version="0.1.0"
     )
 
+    # ✅ CORS FIX (VERY IMPORTANT)
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.CORS_ALLOW_ORIGINS,
+        allow_origins=[
+            "http://localhost:5173",
+            "https://weather-frontend-two-plum.vercel.app",
+        ],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
+    # ✅ DB startup (safe)
     @app.on_event("startup")
     def startup():
         import logging
-
         try:
             Base.metadata.create_all(bind=engine)
             logging.info("✅ Database connected and tables created")
         except Exception as e:
             logging.error("❌ Database connection failed: %s", e)
 
+    # ✅ Routes
     app.include_router(health_router, prefix="/api")
     app.include_router(weather_router, prefix="/api")
 

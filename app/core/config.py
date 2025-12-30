@@ -26,13 +26,11 @@ class Settings(BaseSettings):
     REDIS_URL: str = Field(default="redis://localhost:6379/0", env="REDIS_URL")
 
     # CORS
-    CORS_ALLOW_ORIGINS: List[str] = Field(
-        default_factory=lambda: [
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            os.getenv("FRONTEND_URL", "http://localhost:5173"),
-        ]
-    )
+    CORS_ALLOW_ORIGINS = [
+    "http://localhost:5173",
+    "https://weather-frontend-two-plum.vercel.app",
+]
+
 
     class Config:
         env_file = ".env"

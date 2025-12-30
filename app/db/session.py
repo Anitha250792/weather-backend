@@ -1,19 +1,18 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import sessionmaker, declarative_base
 from app.core.config import settings
 
-
-class Base(DeclarativeBase):
-    pass
-
+DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(
-    settings.DATABASE_URL,
+    DATABASE_URL,
     pool_pre_ping=True,
-    connect_args={"sslmode": "require"} if "postgres" in settings.DATABASE_URL else {},
+    connect_args={"sslmode": "require"} if "postgresql" in DATABASE_URL else {}
 )
 
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
 
 
 def get_db():

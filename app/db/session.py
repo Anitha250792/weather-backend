@@ -7,14 +7,10 @@ class Base(DeclarativeBase):
     pass
 
 
-DATABASE_URL = settings.DATABASE_URL
-
 engine = create_engine(
-    DATABASE_URL,
-    future=True,
+    settings.DATABASE_URL,
     pool_pre_ping=True,
-    pool_size=5,
-    max_overflow=10,
+    future=True,
 )
 
 SessionLocal = sessionmaker(

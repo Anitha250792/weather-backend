@@ -19,3 +19,4 @@ meteostat==1.6.5
 pandas==2.1.3
 numpy==1.25.2
 statsmodels==0.14.1
+# render redeploy trigger

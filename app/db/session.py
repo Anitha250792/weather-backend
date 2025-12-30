@@ -1,24 +1,27 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
-from ..core.config import settings
+from app.core.config import settings
+
 
 class Base(DeclarativeBase):
     pass
 
+
 DATABASE_URL = settings.DATABASE_URL
 
+# ✅ Force SSL for Render Postgres
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
-    future=True,
+    connect_args={"sslmode": "require"},
 )
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine,
-    future=True,
 )
+
 
 def get_db():
     db = SessionLocal()

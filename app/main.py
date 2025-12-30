@@ -7,7 +7,7 @@ from .db.session import Base, engine
 from .api.routes.weather import router as weather_router
 from .api.routes.health import router as health_router
 from .api.routes.predictions import router as predictions_router
-from .api.routes.activities import router as activities_router
+
 
 
 def create_app() -> FastAPI:
@@ -43,7 +43,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router, prefix="/api")
     app.include_router(weather_router, prefix="/api")
     app.include_router(predictions_router, prefix="/api")
-    app.include_router(activities_router, prefix="/api")
+    
 
     return app
 
